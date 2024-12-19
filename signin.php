@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE-edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Multiple Blog Website</title>
+    <title>PHP & MySQL Blog Application with Admin Panel</title>
     <!-- Custom StyleSheet -->
-    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="<?= ROOT_URL ?>assets/css/style.css">
     <!-- Iconscout CDN -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <!-- Google Fonts -->
@@ -27,7 +27,7 @@
             <input type="text" placeholder="Username or Email">
             <input type="password" placeholder=" Password">
             <button type="submit" class="btn">Sign In</button>
-            <small>Don't have an account?<a href="signup.html"> Sign Up</a></small>
+            <small>Don't have an account?<a href="signup.php"> Sign Up</a></small>
         </form>
 
 
