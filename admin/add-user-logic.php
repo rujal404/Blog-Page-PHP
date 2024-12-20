@@ -1,7 +1,7 @@
 <?php
 require 'config/database.php';
 
-//get signup form data if signup button was clicked
+//get signup form data if submit button was clicked
 if(isset($_POST['submit'])) {
     $firstname = filter_var($_POST['firstname'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $lastname = filter_var($_POST['lastname'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -9,21 +9,22 @@ if(isset($_POST['submit'])) {
     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
     $createpassword = filter_var($_POST['createpassword'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $confirmpassword = filter_var($_POST['confirmpassword'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $is_admin = filter_var($_POST['userrole'], FILTER_SANITIZE_NUMBER_INT); 
     $avatar = $_FILES['avatar'];
 
     // validate input values
     if(!$firstname) {
-        $_SESSION['signup'] = "Please enter your First Name";
+        $_SESSION['add-user'] = "Please enter your First Name";
     } else if (!$lastname) {
-        $_SESSION['signup'] = "Please enter your Last Name";
+        $_SESSION['add-user'] = "Please enter your Last Name";
     } else if (!$username) {
-        $_SESSION['signup'] = "Please enter your User Name";
+        $_SESSION['add-user'] = "Please enter your User Name";
     } else if (!$email) {
-        $_SESSION['signup'] = "Please enter your valid email";
+        $_SESSION['add-user'] = "Please enter your valid email";
     } else if (strlen($createpassword) < 8 || strlen($confirmpassword) < 8) { 
-        $_SESSION['signup'] = "Password should be atleast 8 characters";
+        $_SESSION['add-user'] = "Password should be atleast 8 characters";
     } else if (!$avatar['name']) {
-        $_SESSION['signup'] = "Please add avatar";
+        $_SESSION['add-user'] = "Please add avatar";
     } else {
         // check if passwords don't match
         if($createpassword !== $confirmpassword) {
@@ -36,14 +37,14 @@ if(isset($_POST['submit'])) {
             $user_check_query = "SELECT * FROM users WHERE username='$username' OR email='$email'";
             $user_check_result = mysqli_query($connection, $user_check_query);
             if(mysqli_num_rows($user_check_result) > 0) {
-                $_SESSION['signup'] = "Username or email already exist";
+                $_SESSION['add-user'] = "Username or email already exist";
             } else {
                 //Work On Avatar
                 //rename avatar
                 $time = time(); //make each image name uique using current timestamp
                 $avatar_name = $time . $avatar['name'];
                 $avatar_tmp_name = $avatar['tmp_name'];
-                $avatar_destionation_path = './assets/images/' . $avatar_name;
+                $avatar_destionation_path = '../assets/images/' . $avatar_name;
 
                 // make sure file is an image
                 $allowed_files = ['png', 'jpg', 'jpeg'];
@@ -55,38 +56,38 @@ if(isset($_POST['submit'])) {
                         // upload avatar
                         move_uploaded_file($avatar_tmp_name, $avatar_destionation_path);
                     } else {
-                        $_SESSION['signup'] = "File size too big. Should be less than 1mb";
+                        $_SESSION['add-user'] = "File size too big. Should be less than 1mb";
                     }
                 } else {
-                    $_SESSION['signup'] = "File should be png, jpg, or jpeg";
+                    $_SESSION['add-user'] = "File should be png, jpg, or jpeg";
                 }
             }
         }
     }
 
-    // redirect back to signup page if there was any problem
-    if(isset($_SESSION['signup'])) {
+    // redirect back to add-user page if there was any problem
+    if(isset($_SESSION['add-user'])) {
         // pass form data back to signup page
-        $_SESSION['signup-data'] = $_POST;
-        header('location: ' . ROOT_URL . 'signup.php');
+        $_SESSION['add-user-data'] = $_POST;
+        header('location: ' . ROOT_URL . 'admin/add-user.php');
         die();
     } else {
         // insert new users into users table
-        $insert_user_query = "INSERT INTO users SET firstname='$firstname', lastname='$lastname', username='$username', email='$email', password='$hashed_password', avatar='$avatar_name', is_admin=0";
+        $insert_user_query = "INSERT INTO users SET firstname='$firstname', lastname='$lastname', username='$username', email='$email', password='$hashed_password', avatar='$avatar_name', is_admin=$is_admin";
         // $insert_user_query = "INSERT INTO users (firstname, lastname, username, email, password, avatar, is_admin) VALUES('$firstname', '$lastname', '$username', '$email', '$hashed_password', '$avatar_name', 0)";
         $insert_user_result = mysqli_query($connection, $insert_user_query);
 
         if(!mysqli_errno($connection)) {
             //redirect to login page with success message
-            $_SESSION['signup-success'] = "Registration successful. Please log in";
-            header('location: ' . ROOT_URL . 'signin.php');
+            $_SESSION['add-user-success'] = "New user $firstname $lastname added successfully.";
+            header('location: ' . ROOT_URL . 'admin/manage-users.php');
             die();
         }
     }
 
 } else {
     // if buttom wasn't clicked, bounce back to signup page
-    header('location: ' . ROOT_URL . 'signup.php');
+    header('location: ' . ROOT_URL . 'admin/add-user.php');
     die();
 }
 ?> 

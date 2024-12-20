@@ -4,7 +4,7 @@ require 'config/database.php';
 // fetch current user form database
 if(isset($_SESSION['user-id'])) {
     $id = filter_var($_SESSION['user-id'], FILTER_SANITIZE_NUMBER_INT);
-    $query = "SELECT avatar FROM users WHERE users WHERE id=$id";
+    $query = "SELECT avatar FROM users WHERE id=$id";
     $result = mysqli_query($connection, $query);
     $avatar = mysqli_fetch_assoc($result);
 }
@@ -42,7 +42,7 @@ if(isset($_SESSION['user-id'])) {
                 <?php if(isset($_SESSION['user-id'])) : ?>
                     <li class="nav__profile">
                     <div class="avatar">
-                        <img src="<?php ROOT_URL . './assets/images/' . $avatar['avatar'] ?>">
+                        <img src= "<?= ROOT_URL . 'assets/images/' . $avatar['avatar'] ?>">
                     </div>
                     <ul>
                         <li><a href="<?= ROOT_URL ?>admin/index.php">Dashboard</a></li>
