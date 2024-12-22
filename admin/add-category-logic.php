@@ -9,7 +9,7 @@ if(isset($_POST['submit'])) {
     if(!$title) {
         $_SESSION['add-category'] = "Enter title";
     } elseif (!$description) {
-        $_SESSION['add-caegory'] = "Enter description";
+        $_SESSION['add-category'] = "Enter description";
     }
 
     // redirect back to category page with form data if there was invalid input
@@ -32,3 +32,4 @@ if(isset($_POST['submit'])) {
         }
     }    
 }
+?>
