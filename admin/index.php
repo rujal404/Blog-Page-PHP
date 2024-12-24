@@ -1,5 +1,10 @@
 <?php
 include 'partials/header.php';
+
+// fetch curent user's posts from database
+$current_user_id = $_SESSION['user-id'];
+$query = "SELECT posts.id, posts.title, posts.category_id, FROM posts JOIN users ON posts.author_id = user.id WHERE posts.author_id=$current_user_id ORDER BY posts.id DESC";
+$posts = mysqli_query($connection, $query);
 ?>
 
     <!-- ===== Dashboard Section ===== -->
@@ -45,6 +50,7 @@ include 'partials/header.php';
         </aside>
         <main>
             <h2>Manage Users</h2>
+            <?php if(mysqli_num_rows($posts) > 0) : ?>
             <table>
                 <thead>
                     <tr>
@@ -55,32 +61,19 @@ include 'partials/header.php';
                     </tr>
                 </thead>
                 <tbody>
+                    <?php while($post = mysqli_fetch_assoc($posts)) : ?>
                     <tr>
-                        <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</td>
-                        <td>Wild Life</td>
+                        <td><?= $post['title'] ?></td>
+                        <td></td>
                         <td><a href="edit-post.php" class="btn sm">Edit</a></td>
                         <td><a href="delete-category.php" class="btn sm danger">Delete</a></td>
                     </tr>
-                    <tr>
-                        <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</td>
-                        <td>Wild Life</td>
-                        <td><a href="edit-post.php" class="btn sm">Edit</a></td>
-                        <td><a href="delete-category.php" class="btn sm danger">Delete</a></td>
-                    </tr>
-                    <tr>
-                        <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</td>
-                        <td>Wild Life</td>
-                        <td><a href="edit-post.php" class="btn sm">Edit</a></td>
-                        <td><a href="delete-category.php" class="btn sm danger">Delete</a></td>
-                    </tr>
-                    <tr>
-                        <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</td>
-                        <td>Wild Life</td>
-                        <td><a href="edit-post.php" class="btn sm">Edit</a></td>
-                        <td><a href="delete-category.php" class="btn sm danger">Delete</a></td>
-                    </tr>
+                    <?php endwhile ?>
                 </tbody>
             </table>
+            <?php else : ?>
+                <div class="alert_message error"><?= "No posts found" ?></div>
+                <?php endif ?>
         </main>
     </div>
     </section>
