@@ -17,7 +17,7 @@ $posts = mysqli_query($connection, $query);
                     ?>
                 </p>
             </div>
-    <php endif ?>        
+    <?php endif ?>        
     <div class="container dashboard__container">
         <button id="show__sidebar-btn" class="sidebar__toggle"><i class="uil uil-angle-right-b"></i></button>
         <button id="hide__sidebar-btn" class="sidebar__toggle"><i class="uil uil-angle-left-b"></i></button>
@@ -60,7 +60,6 @@ $posts = mysqli_query($connection, $query);
         <main>
             <h2>Manage Users</h2>
             <?php if(mysqli_num_rows($posts) > 0) : ?>
-                <?php endif ?>
             <table>
                 <thead>
                     <tr>
@@ -83,15 +82,15 @@ $posts = mysqli_query($connection, $query);
                     <tr>
                         <td><?= $post['title'] ?></td>
                         <td><?= $category['title'] ?></td>
-                        <td><a href="<?= ROOT_URL ?>edit-post.php?id=<?= $post['id']?>" class="btn sm">Edit</a></td>
-                        <td><a href="<?= ROOT_URL ?>delete-category.php?id=<?= $post['id'] ?>" class="btn sm danger">Delete</a></td>
+                        <td><a href="<?= ROOT_URL ?>admin/edit-post.php?id=<?= $post['id']?>" class="btn sm">Edit</a></td>
+                        <td><a href="<?= ROOT_URL ?>admin/delete-category.php?id=<?= $post['id'] ?>" class="btn sm danger">Delete</a></td>
                     </tr>
                     <?php endwhile ?>
                 </tbody>
             </table>
             <?php else : ?>
-                <div class="alert_message error"><?= "No posts found" ?></div>
-                <?php endif ?>
+                <div class="alert__message error"><?= "No posts found" ?></div>
+            <?php endif ?>
         </main>
     </div>
     </section>
