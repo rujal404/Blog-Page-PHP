@@ -1,5 +1,9 @@
 <?php 
-    include 'partials/header.php'
+    include 'partials/header.php';
+
+    // fetch categories from database
+    $category_query = "SELECT * FROM categories";
+    $categories = mysqli_query($connection, $category_query);
 ?>
 
 
@@ -11,12 +15,9 @@
         <form action="" enctype="multipart/form-data">
             <input type="text" placeholder="Title">
             <select>
-                <option value="1">Travel</option>
-                <option value="1">Art</option>
-                <option value="1">Science & Technology</option>
-                <option value="1">Travel</option>
-                <option value="1">Food</option>
-                <option value="1">Music</option>
+                <?php while($category = mysqli_fetch_assoc($categories)) : ?>
+                    <option value="<?= $category['id'] ?>"><?= $category['title'] ?></option>
+                <?php endwhile ?>
             </select>
             <textarea rows="10" placeholder="Body"></textarea>
             <div class="form__control inline">
@@ -35,5 +36,5 @@
 
 
 <?php 
-    include '../partials/footer.php'
+    include '../partials/footer.php';
 ?>

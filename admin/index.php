@@ -3,12 +3,21 @@ include 'partials/header.php';
 
 // fetch curent user's posts from database
 $current_user_id = $_SESSION['user-id'];
-$query = "SELECT posts.id, posts.title, posts.category_id, FROM posts JOIN users ON posts.author_id = user.id WHERE posts.author_id=$current_user_id ORDER BY posts.id DESC";
+$query = "SELECT id, title, category_id FROM posts WHERE author_id=$current_user_id ORDER BY id DESC";
 $posts = mysqli_query($connection, $query);
 ?>
 
     <!-- ===== Dashboard Section ===== -->
     <section class="dashboard">
+    <?php if(isset($_SESSION['add-post-success'])) :  // show if add post was successful ?>
+            <div class="alert__message success container">
+                <p>
+                    <?= $_SESSION['add-post-success']; 
+                    unset($_SESSION['add-post-success']);
+                    ?>
+                </p>
+            </div>
+    <php endif ?>        
     <div class="container dashboard__container">
         <button id="show__sidebar-btn" class="sidebar__toggle"><i class="uil uil-angle-right-b"></i></button>
         <button id="hide__sidebar-btn" class="sidebar__toggle"><i class="uil uil-angle-left-b"></i></button>
@@ -51,6 +60,7 @@ $posts = mysqli_query($connection, $query);
         <main>
             <h2>Manage Users</h2>
             <?php if(mysqli_num_rows($posts) > 0) : ?>
+                <?php endif ?>
             <table>
                 <thead>
                     <tr>
@@ -62,11 +72,19 @@ $posts = mysqli_query($connection, $query);
                 </thead>
                 <tbody>
                     <?php while($post = mysqli_fetch_assoc($posts)) : ?>
+                        <!-- get category title of each post from category table -->
+                    <?php
+                    $category_id = $post['category_id'];
+                    $category_query = "SELECT title FROM categories WHERE id=$category_id";
+                    $category_result = mysqli_query($connection, $category_query); 
+                    $category = mysqli_fetch_assoc($category_result);
+
+                    ?>     
                     <tr>
                         <td><?= $post['title'] ?></td>
-                        <td></td>
-                        <td><a href="edit-post.php" class="btn sm">Edit</a></td>
-                        <td><a href="delete-category.php" class="btn sm danger">Delete</a></td>
+                        <td><?= $category['title'] ?></td>
+                        <td><a href="<?= ROOT_URL ?>edit-post.php?id=<?= $post['id']?>" class="btn sm">Edit</a></td>
+                        <td><a href="<?= ROOT_URL ?>delete-category.php?id=<?= $post['id'] ?>" class="btn sm danger">Delete</a></td>
                     </tr>
                     <?php endwhile ?>
                 </tbody>

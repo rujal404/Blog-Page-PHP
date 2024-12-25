@@ -8,6 +8,7 @@ $categories = mysqli_query($connection, $query);
 
     <!-- ===== Dashboard Section ===== -->
     <section class="dashboard">
+        
     <?php if(isset($_SESSION['add-category-success'])) :  // show if add category was successful ?>
             <div class="alert__message success container">
                 <p>
