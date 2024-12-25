@@ -31,6 +31,7 @@
         <form action="<?= ROOT_URL ?>admin/add-post-logic.php" enctype="multipart/form-data" method="POST">
             <input type="text" name="title" value="<?= $title ?>" placeholder="Title">
             <select name="category">
+                <option>Select</option>
                 <?php while($category = mysqli_fetch_assoc($categories)) : ?>
                 <option value="<?= $category['id'] ?>"><?= $category['title'] ?></option>
                 <?php endwhile ?>

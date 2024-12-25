@@ -55,7 +55,7 @@ if(isset($_POST['submit'])) {
         }
     }
 
-    if($_SESSION['edit-post']) {
+    if ($_SESSION['edit-post']) {
         // redirect to manage from page if from was invalid
         header('location: ' . ROOT_URL . 'admin/');
         die();
@@ -69,7 +69,7 @@ if(isset($_POST['submit'])) {
             // set thumbnail name if a new one was uploaded, else keep old thumbnail name
             $thumbnail_to_insert = $thumbnail_name ?? $previous_thumbnail_name;
 
-            $query = "UPDATE posts SET title='$title', body='$body', thumbnail='$thumbnail_to_insert'; 
+            $query = "UPDATE posts SET title='$title', body='$body', thumbnail='$thumbnail_to_insert', 
             category_id=$category_id, is_featured=$is_featured WHERE id=$id LIMIT 1";
             $result = mysqli_query($connection, $query);
     }
