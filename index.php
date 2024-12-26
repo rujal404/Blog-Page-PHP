@@ -31,7 +31,7 @@ $posts = mysqli_query($connection, $query);
                 <a href="<?= ROOT_URL ?>category-posts.php?id=<?= $category['id'] ?>" class="category__button"><?= $category['title'] ?></a>
                 <h2 class="post__title"><a href="<?= ROOT_URL ?>post.php?id=<?= $featured['id'] ?>"><?= $featured['title'] ?></a></h2>
                 <p class="post__body">
-                    <?= substr($featured['body'], 0, 300) ?>...
+                    <?= substr($featured['body'], 0, 500) ?>...
                 </p>
                 <div class="post__author">
                     <?php
@@ -58,7 +58,7 @@ $posts = mysqli_query($connection, $query);
 <?php endif ?>
 
     <!--========== Posts Section  ==========-->
-    <section class="posts">
+    <section class="posts <?= $featured ? '' : 'section__extra-margin' ?>">
         <div class="container posts__container">
             <?php while($post = mysqli_fetch_assoc($posts)) : ?>
             <article class="post">
@@ -78,8 +78,7 @@ $posts = mysqli_query($connection, $query);
                         <a href="<?= ROOT_URL ?>post.php?id=<?= $post['id'] ?>"><?= $post['title'] ?></a>
                     </h3>
                     <p class="post__body">
-                        <?= $post['body'] ?>
-                        <?= substr($post['body'], 0, 150) ?>...
+                        <?= substr($post['body'], 0, 200) ?>...
                     </p>
                     <div class="post__author">
                     <?php
